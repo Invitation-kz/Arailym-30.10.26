@@ -240,7 +240,7 @@
 
 <!-- ВИДЕО 1 -->
 <div class="element-animation">
-  <video src="photo1.mp4" autoplay muted loop playsinline></video>
+  <video src="photo1.mp4" muted playsinline></video>
 </div>
 
 <!-- МУЗЫКА БАСҚАРУ ТҮЙМЕСІ (photo1.mp4 мен photo2.mp4 арасында, дербес орны бар) -->
@@ -253,24 +253,24 @@
 
 <!-- ВИДЕО 2 -->
 <div class="element-animation">
-  <video src="photo2.mp4" autoplay muted loop playsinline></video>
+  <video src="photo2.mp4" muted playsinline></video>
 </div>
 
 <!-- ВИДЕО 3 -->
 <div class="element-animation">
-  <video src="photo3.mp4" autoplay muted loop playsinline></video>
+  <video src="photo3.mp4" muted playsinline></video>
 </div>
 
 <!-- ВИДЕО 4 (2ГИС сілтемесі) -->
 <div class="element-animation">
   <a href="https://go.2gis.com/mRpOt" target="_blank">
-    <video src="photo4.mp4" autoplay muted loop playsinline></video>
+    <video src="photo4.mp4" muted playsinline></video>
   </a>
 </div>
 
 <!-- ВИДЕО 5 + ТАЙМЕР (ақ түсті, дәл ортасында) -->
 <div class="element-animation video-timer-overlay">
-  <video src="photo5.mp4" autoplay muted loop playsinline></video>
+  <video src="photo5.mp4" muted playsinline></video>
   <div class="timer-wrapper">
     <div class="countdown-container">
       <div class="countdown-item">
@@ -298,12 +298,12 @@
 
 <!-- ВИДЕО 6 -->
 <div class="element-animation">
-  <video src="photo6.mp4" autoplay muted loop playsinline></video>
+  <video src="photo6.mp4" muted playsinline></video>
 </div>
 
 <!-- ВИДЕО 7 -->
 <div class="element-animation">
-  <video src="photo7.mp4" autoplay muted loop playsinline></video>
+  <video src="photo7.mp4" muted playsinline></video>
 </div>
 
 <!-- ОПРОС (photo7.mp4-тен кейін) -->
@@ -343,7 +343,7 @@
 <!-- ВИДЕО 8 (Instagram сілтемесі) -->
 <div class="element-animation">
   <a href="https://www.instagram.com/toiga_shaqyrtugo/" target="_blank">
-    <video src="photo8.mp4" autoplay muted loop playsinline></video>
+    <video src="photo8.mp4" muted playsinline></video>
   </a>
 </div>
 
@@ -371,15 +371,24 @@
       }
     });
 
-    // Видеолардың бірте-бірте пайда болуы
+    // Видеолардың бірте-бірте пайда болуы + көру аймағына кіргенде бір рет ойнау
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('element-show');
+
+          const video = entry.target.querySelector('video');
+          if (video) {
+            video.currentTime = 0;
+            video.play().catch(function (err) {
+              console.warn('Видео ойнатылмады:', err);
+            });
+          }
+
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.4 });
     document.querySelectorAll('.element-animation').forEach(function (el) {
       observer.observe(el);
     });
@@ -441,17 +450,11 @@
 
       const details = {
         name: message.value.trim(),
-        attend: attend ? attend.value : '',
         choice: choice ? choice.value : '',
+        message: attend ? attend.value : '',
       };
 
       if (URL_APP) {
-        let formBody = [];
-        for (const property in details) {
-          formBody.push(encodeURIComponent(property) + "=" + encodeURIComponent(details[property]));
-        }
-        formBody = formBody.join("&");
-
         fetch(URL_APP, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
