@@ -68,26 +68,23 @@
     padding: 30px 0;
   }
   .music-toggle-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
     background: transparent;
     border: 1px solid #3c5a1c;
     color: #3c5a1c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 30px;
+    padding: 12px 32px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     cursor: pointer;
     transition: 0.3s;
+    white-space: nowrap;
   }
   .music-toggle-btn:hover {
     background: #3c5a1c;
     color: #ffffff;
-  }
-  .music-toggle-btn svg {
-    width: 26px;
-    height: 26px;
-    fill: currentColor;
   }
 
   /* ТАЙМЕР (жасыл, дербес) */
@@ -246,8 +243,7 @@
 <!-- МУЗЫКА БАСҚАРУ ТҮЙМЕСІ (photo1.mp4 мен photo2.mp4 арасында, дербес орны бар) -->
 <div class="music-toggle-wrapper">
   <button id="musicToggleBtn" class="music-toggle-btn" type="button" aria-label="Музыканы қосу/өшіру">
-    <svg id="musicIconOn" viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2c0-1.77-.77-3.29-2-4.34v8.68c1.23-1.05 2-2.57 2-4.34zM14 3.23v2.06c2.89 1.02 5 3.76 5 6.98s-2.11 5.96-5 6.98v2.06c4.01-1.03 7-4.67 7-9.04s-2.99-8.01-7-9.04z"/></svg>
-    <svg id="musicIconOff" viewBox="0 0 24 24" style="display:none;"><path d="M16.5 12A4.5 4.5 0 0014.5 8v1.79l1.99 1.99c.01-.26.01-.52.01-.78zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89 1.02 5 3.76 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.32 2.63-.95 3.69-1.8L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+    <span id="musicBtnText">Әуенді қосу</span>
   </button>
 </div>
 
@@ -351,8 +347,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const audio = document.getElementById('backgroundMusic');
     const musicBtn = document.getElementById('musicToggleBtn');
-    const iconOn = document.getElementById('musicIconOn');
-    const iconOff = document.getElementById('musicIconOff');
+    const musicBtnText = document.getElementById('musicBtnText');
     let isPlaying = false;
 
     musicBtn.addEventListener('click', function () {
@@ -360,13 +355,11 @@
         audio.play().catch(function (err) {
           console.warn('Не удалось запустить музыку:', err);
         });
-        iconOn.style.display = 'block';
-        iconOff.style.display = 'none';
+        musicBtnText.textContent = 'Әуенді өшіру';
         isPlaying = true;
       } else {
         audio.pause();
-        iconOn.style.display = 'none';
-        iconOff.style.display = 'block';
+        musicBtnText.textContent = 'Әуенді қосу';
         isPlaying = false;
       }
     });
